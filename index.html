@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RGUKT ENGG-GRADEMATE</title>
+    <link rel="icon" href="RGUKT_Srikakulam_Official_idVgXaJLm-_0.png" sizes="32x32" type="image/png">
+    <meta name="description" content="Calculate your Semester GPA (SGPA) for all engineering branches at RGUKT. Select your branch to get started.">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .hero-section {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 56px;
+            min-height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            animation: fadeUp 0.7s ease-out;
+        }
+        .hero-bg {
+            position: absolute; inset: 0;
+            background: url('images/hero_banner.png') center/cover no-repeat;
+        }
+        .hero-bg::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(6,6,26,0.88) 0%, rgba(6,6,26,0.65) 50%, rgba(6,6,26,0.88) 100%);
+        }
+        .hero-content {
+            position: relative; z-index: 2;
+            padding: 60px 30px;
+        }
+        .hero-content h1 {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 900; letter-spacing: -0.035em;
+            background: linear-gradient(135deg, #fff 0%, var(--accent-2) 60%, var(--accent-3) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 14px;
+        }
+        .hero-content p {
+            font-size: 1.05rem; color: var(--text-secondary);
+            max-width: 550px; margin: 0 auto 24px;
+        }
+        .hero-stats {
+            display: flex; justify-content: center; gap: 32px; flex-wrap: wrap;
+        }
+        .hero-stat {
+            text-align: center;
+        }
+        .hero-stat__val {
+            font-size: 1.8rem; font-weight: 800;
+            color: var(--accent-3);
+        }
+        .hero-stat__label {
+            font-size: 0.72rem; font-weight: 600;
+            color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-title {
+            font-size: 1.4rem; font-weight: 800;
+            color: var(--text-primary); margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+        .section-subtitle {
+            font-size: 0.88rem; color: var(--text-muted);
+            margin-bottom: 32px;
+        }
+
+        .branch-card:nth-child(1) { animation-delay: 0.05s; }
+        .branch-card:nth-child(2) { animation-delay: 0.1s; }
+        .branch-card:nth-child(3) { animation-delay: 0.15s; }
+        .branch-card:nth-child(4) { animation-delay: 0.2s; }
+        .branch-card:nth-child(5) { animation-delay: 0.25s; }
+        .branch-card:nth-child(6) { animation-delay: 0.3s; }
+        .branch-card:nth-child(7) { animation-delay: 0.35s; }
+
+        .formula-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+            margin-bottom: 56px;
+            backdrop-filter: blur(14px);
+            animation: fadeUp 0.6s ease-out 0.2s both;
+        }
+        .formula-card h3 {
+            font-size: 1rem; font-weight: 700;
+            color: var(--accent-2); margin-bottom: 16px;
+        }
+        .formula {
+            display: flex; align-items: center; justify-content: center;
+            gap: 8px; flex-wrap: wrap;
+            padding: 20px;
+            background: rgba(108,92,231,0.06);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 1.1rem; font-weight: 600;
+            color: var(--text-primary); margin-bottom: 16px;
+        }
+        .formula .accent { color: var(--accent-3); }
+        .formula .pink { color: var(--accent-4); }
+        .grade-legend {
+            display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+        }
+        .grade-legend .grade-chip { font-size: 0.75rem; }
+    </style>
+</head>
+<body>
+    <div class="orb orb--1"></div>
+    <div class="orb orb--2"></div>
+    <div class="orb orb--3"></div>
+    <div class="bg-ambient"></div>
+
+    <!-- Navigation -->
+    <nav class="top-nav" id="topNav">
+        <a href="index.html" class="nav-logo">📐 SGPA Calc</a>
+        <button class="nav-hamburger" onclick="toggleNav()" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links">
+            <a href="index.html" class="active">Home</a>
+            <a href="ece.html">ECE</a>
+            <a href="cse.html">CSE</a>
+            <a href="me.html">ME</a>
+            <a href="che.html">CHEM</a>
+            <a href="mme.html">MME</a>
+            <a href="eee.html">EEE</a>
+            <a href="civil.html">CIVIL</a>
+            <a href="cgpa.html">CGPA</a>
+        </div>
+    </nav>
+
+    <div class="page-wrap">
+        <!-- Hero Section -->
+        <section class="hero-section" id="home">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <div class="badge">RGUKT SGPA Calculator</div>
+                <h1>Calculate Your Semester GPA</h1>
+                <p>Select your engineering branch below to calculate your SGPA with pre-loaded subjects and credits for each semester.</p>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat__val">7</div>
+                        <div class="hero-stat__label">Branches</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat__val">8</div>
+                        <div class="hero-stat__label">Semesters</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat__val">160+</div>
+                        <div class="hero-stat__label">Total Credits</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Formula Card -->
+        <div class="formula-card">
+            <h3>📝 SGPA Formula</h3>
+            <div class="formula">
+                SGPA = <span class="accent">Σ</span>(<span class="pink">Grade</span> × <span class="accent">Credit</span>) / <span class="accent">Total Credits</span>
+            </div>
+            <div class="grade-legend">
+                <div class="grade-chip"><span class="gl">Ex</span> = <span class="gv">10</span></div>
+                <div class="grade-chip"><span class="gl">A</span> = <span class="gv">9</span></div>
+                <div class="grade-chip"><span class="gl">B</span> = <span class="gv">8</span></div>
+                <div class="grade-chip"><span class="gl">C</span> = <span class="gv">7</span></div>
+                <div class="grade-chip"><span class="gl">D</span> = <span class="gv">6</span></div>
+                <div class="grade-chip"><span class="gl">E</span> = <span class="gv">5</span></div>
+            </div>
+        </div>
+
+        <!-- Branch Cards -->
+        <h2 class="section-title" id="branches">Select Your Branch</h2>
+        <p class="section-subtitle">Choose your engineering department to calculate semester-wise SGPA</p>
+
+        <div class="branches-grid">
+            <!-- ECE -->
+            <a href="ece.html" class="branch-card" id="branch-ece">
+                <div class="branch-card__banner" style="background-image: url('images/ece_banner.png')">
+                    <div class="branch-card__icon">📡</div>
+                </div>
+                <div class="branch-card__body">
+                    <div class="branch-card__code">ECE</div>
+                    <div class="branch-card__name">Electronics & Communications Engineering</div>
+                    <div class="branch-card__meta">
+                        <span>📚 8 Semesters</span>
+                    </div>
+                    <div class="branch-card__arrow">Open Calculator →</div>
+                </div>
+            </a>
+
+            <!-- CSE -->
+            <a href="cse.html" class="branch-card" id="branch-cse">
+                <div class="branch-card__banner" style="background-image: url('images/cse_banner.png')">
+                    <div class="branch-card__icon">💻</div>
+                </div>
+                <div class="branch-card__body">
+                    <div class="branch-card__code">CSE</div>
+                    <div class="branch-card__name">Computer Science & Engineering</div>
+                    <div class="branch-card__meta">
+                        <span>📚 8 Semesters</span>
+                    </div>
+                    <div class="branch-card__arrow">Open Calculator →</div>
+                </div>
+            </a>
+
+            <!-- Mechanical -->
+            <a href="me.html" class="branch-card" id="branch-me">
+                <div class="branch-card__banner" style="background-image: url('images/mech_banner.png')">
+                    <div class="branch-card__icon">⚙️</div>
+                </div>
+                <div class="branch-card__body">
+                    <div class="branch-card__code">ME</div>
+                    <div class="branch-card__name">Mechanical Engineering</div>
+                    <div class="branch-card__meta">
+                        <span>📚 8 Semesters</span>
+                    </div>
+                    <div class="branch-card__arrow">Open Calculator →</div>
+                </div>
+            </a>
+
+            <!-- Chemical -->
+            <a href="che.html" class="branch-card" id="branch-che">
+                <div class="branch-card__banner" style="background-image: url('images/chem_banner.png')">
+                    <div class="branch-card__icon">🧪</div>
+                </div>
+                <div class="branch-card__body">
+                    <div class="branch-card__code">ChemE</div>
+                    <div class="branch-card__name">Chemical Engineering</div>
+                    <div class="branch-card__meta">
+                        <span>📚 8 Semesters</span>
+                    </div>
+                    <div class="branch-card__arrow">Open Calculator →</div>
+                </div>
+            </a>
+
+            <!-- MME -->
+            <a href="mme.html" class="branch-card" id="branch-mme">
+                <div class="branch-card__banner" style="background-image: url('images/mme_banner.png')">
+                    <div class="branch-card__icon">🔩</div>
+                </div>
+                <div class="branch-card__body">
+                    <div class="branch-card__code">MME</div>
+                    <div class="branch-card__name">Metallurgical & Materials Engineering</div>
+                    <div class="branch-card__meta">
+                        <span>📚 8 Semesters</span>
+                    </div>
+                    <div class="branch-card__arrow">Open Calculator →</div>
+                </div>
+            </a>
+
+            <!-- EEE -->
+            <a href="eee.html" class="branch-card" id="branch-eee">
+                <div class="branch-card__banner" style="background-image: url('images/eee_banner.png')">
+                    <div class="branch-card__icon">⚡</div>
+                </div>
+                <div class="branch-card__body">
+                    <div class="branch-card__code">EEE</div>
+                    <div class="branch-card__name">Electrical & Electronics Engineering</div>
+                    <div class="branch-card__meta">
+                        <span>📚 8 Semesters</span>
+                    </div>
+                    <div class="branch-card__arrow">Open Calculator →</div>
+                </div>
+            </a>
+
+            <!-- Civil -->
+            <a href="civil.html" class="branch-card" id="branch-civil">
+                <div class="branch-card__banner" style="background-image: url('images/civil_banner.png')">
+                    <div class="branch-card__icon">🏗️</div>
+                </div>
+                <div class="branch-card__body">
+                    <div class="branch-card__code">Civil</div>
+                    <div class="branch-card__name">Civil Engineering</div>
+                    <div class="branch-card__meta">
+                        <span>📚 8 Semesters</span>
+                    </div>
+                    <div class="branch-card__arrow">Open Calculator →</div>
+                </div>
+            </a>
+        </div>
+
+        <footer class="site-footer">
+            <p>Made with <span>♥</span> for RGUKT students &middot; <a href="index.html">SGPA Calculator</a></p>
+        </footer>
+    </div>
+
+    <script>
+        // Nav scroll effect
+        window.addEventListener('scroll', () => {
+            document.querySelector('.top-nav')?.classList.toggle('scrolled', window.scrollY > 20);
+        });
+        function toggleNav() {
+            document.querySelector('.nav-links')?.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>

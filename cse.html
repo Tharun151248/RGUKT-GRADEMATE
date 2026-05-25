@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSE-SGPA Calculator</title>
+    <link rel="icon" href="RGUKT_Srikakulam_Official_idVgXaJLm-_0.png" sizes="32x32" type="image/png">
+    <meta name="description" content="Calculate SGPA for Computer Science & Engineering (R20) at RGUKT.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="orb orb--1"></div><div class="orb orb--2"></div><div class="orb orb--3"></div>
+<div class="bg-ambient"></div>
+
+<nav class="top-nav">
+    <a href="index.html" class="nav-logo">📐 SGPA Calc</a>
+    <button class="nav-hamburger" onclick="toggleNav()" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+        <a href="index.html">Home</a><a href="ece.html">ECE</a><a href="cse.html" class="active">CSE</a>
+        <a href="me.html">ME</a><a href="che.html">CHEM</a><a href="mme.html">MME</a>
+        <a href="eee.html">EEE</a><a href="civil.html">CIVIL</a><a href="cgpa.html">CGPA</a>
+    </div>
+</nav>
+
+<div class="page-wrap">
+    <header class="page-header">
+        <div class="badge">CSE</div>
+        <h1 class="page-title">Computer Science & Engineering</h1>
+        <p class="page-subtitle">Select grades for each subject · Total Credits: <span id="totalCredits">—</span></p>
+    </header>
+    <div class="grade-strip">
+        <div class="grade-chip"><span class="gl">Ex</span> = <span class="gv">10</span></div>
+        <div class="grade-chip"><span class="gl">A</span> = <span class="gv">9</span></div>
+        <div class="grade-chip"><span class="gl">B</span> = <span class="gv">8</span></div>
+        <div class="grade-chip"><span class="gl">C</span> = <span class="gv">7</span></div>
+        <div class="grade-chip"><span class="gl">D</span> = <span class="gv">6</span></div>
+        <div class="grade-chip"><span class="gl">E</span> = <span class="gv">5</span></div>
+    </div>
+    <div id="semTabs" class="sem-tabs"></div>
+    <div id="subjectsGrid" class="subjects-grid"></div>
+    <div class="btn-row"><button class="btn-primary" onclick="calculateSGPA()">Calculate SGPA</button></div>
+    <section id="resultArea" class="result-area">
+        <div class="result-card">
+            <div class="result-label">Your SGPA</div>
+            <div class="result-value" id="sgpaValue">0.00</div>
+            <div class="result-remark" id="sgpaRemark"></div>
+            <div class="breakdown">
+                <div class="breakdown-heading">Grade Breakdown</div>
+                <table class="breakdown-table"><thead><tr><th>Subject</th><th>Grade</th><th>Credit</th><th>Points</th></tr></thead><tbody id="breakdownBody"></tbody></table>
+            </div>
+            <button class="btn-secondary" onclick="resetAll()" style="margin-top:24px">↺ Reset All</button>
+        </div>
+    </section>
+    <footer class="site-footer"><p>Made with <span>♥</span> for RGUKT students · <a href="index.html">SGPA Calculator</a></p></footer>
+</div>
+
+<script src="calculator.js"></script>
+<script>
+initBranchPage([
+  { label:'Sem 1', subjects:[
+    {name:'Calculus & Linear Algebra',credit:4},
+    {name:'Basic Electrical & Electronics Engg.',credit:4},
+    {name:'Problem Solving & Programming Through C',credit:4},
+    {name:'Engineering Graphics & Computer Drafting',credit:2.5},
+    {name:'English-Language Communication Skills Lab-I',credit:2.5},
+    {name:'Basic Electrical & Electronics Engg. Lab',credit:1.5},
+    {name:'Problem Solving & Programming Through C Lab',credit:1.5}
+  ]},
+  { label:'Sem 2', subjects:[
+    {name:'Discrete Mathematics',credit:4},
+    {name:'Engineering Physics',credit:4},
+    {name:'Managerial Economics & Finance Analysis',credit:3},
+    {name:'Object Oriented Programming through Java',credit:4},
+    {name:'Data Structures',credit:3},
+    {name:'Engineering Physics Lab',credit:1.5},
+    {name:'OOP through Java Lab',credit:1.5},
+    {name:'Data Structures Lab',credit:1.5}
+  ]},
+  { label:'Sem 3', subjects:[
+    {name:'Probability and Statistics',credit:4},
+    {name:'Digital Logic Design',credit:3},
+    {name:'Design & Analysis of Algorithms',credit:4},
+    {name:'Database Management Systems',credit:3},
+    {name:'Formal Languages & Automata Theory',credit:3},
+    {name:'Design & Analysis of Algorithms Lab',credit:1.5},
+    {name:'Digital Logic Design Lab',credit:1.5},
+    {name:'Database Management Systems Lab',credit:1.5}
+  ]},
+  { label:'Sem 4', subjects:[
+    {name:'Introduction to Operation Research',credit:3},
+    {name:'Computer Organization & Architecture',credit:3},
+    {name:'Data Science with Python',credit:3},
+    {name:'Web Technologies',credit:3},
+    {name:'Compiler Design',credit:3},
+    {name:'Computer Organization & Architecture Lab',credit:1.5},
+    {name:'Data Science with Python Lab',credit:1.5},
+    {name:'Web Technologies Lab',credit:1.5}
+  ]},
+  { label:'Sem 5', subjects:[
+    {name:'Operating System',credit:3},
+    {name:'Computer Networks',credit:3},
+    {name:'Software Engineering',credit:3},
+    {name:'Mathematical Foundations for Data Science',credit:3},
+    {name:'Elective I',credit:3},
+    {name:'Operating System Lab',credit:1.5},
+    {name:'Computer Networks Lab',credit:1.5},
+    {name:'Software Engineering Lab',credit:1.5},
+    {name:'English-Language Communication Skills Lab-II',credit:1.5}
+  ]},
+  { label:'Sem 6', subjects:[
+    {name:'Cryptography & Network Security',credit:4},
+    {name:'Artificial Intelligence',credit:4},
+    {name:'Elective II',credit:3},
+    {name:'Elective III',credit:3},
+    {name:'Open Elective-I',credit:3},
+    {name:'English-Language Communication Skills Lab-III',credit:1.5},
+    {name:'Mini Project',credit:3}
+  ]},
+  { label:'Sem 7', subjects:[
+    {name:'Machine Learning',credit:4},
+    {name:'Elective-IV',credit:3},
+    {name:'Open Elective II',credit:3},
+    {name:'Project-I',credit:6}
+  ]},
+  { label:'Sem 8', subjects:[
+    {name:'Elective-V',credit:3},
+    {name:'Open Elective-III',credit:3},
+    {name:'Open Elective-IV',credit:3},
+    {name:'Project-II',credit:6},
+    {name:'Community Service',credit:2}
+  ]}
+]);
+</script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ME-SGPA Calculator</title>
+    <link rel="icon" href="RGUKT_Srikakulam_Official_idVgXaJLm-_0.png" sizes="32x32" type="image/png">
+    <meta name="description" content="Calculate SGPA for Mechanical Engineering (R19) at RGUKT.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="orb orb--1"></div><div class="orb orb--2"></div><div class="orb orb--3"></div>
+<div class="bg-ambient"></div>
+
+<nav class="top-nav">
+    <a href="index.html" class="nav-logo">📐 SGPA Calc</a>
+    <button class="nav-hamburger" onclick="toggleNav()" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+        <a href="index.html">Home</a><a href="ece.html">ECE</a><a href="cse.html">CSE</a>
+        <a href="me.html" class="active">ME</a><a href="che.html">CHEM</a><a href="mme.html">MME</a>
+        <a href="eee.html">EEE</a><a href="civil.html">CIVIL</a><a href="cgpa.html">CGPA</a>
+    </div>
+</nav>
+
+<div class="page-wrap">
+    <header class="page-header">
+        <div class="badge">ME</div>
+        <h1 class="page-title">Mechanical Engineering</h1>
+        <p class="page-subtitle">Select grades for each subject · Total Credits: <span id="totalCredits">—</span></p>
+    </header>
+    <div class="grade-strip">
+        <div class="grade-chip"><span class="gl">Ex</span> = <span class="gv">10</span></div>
+        <div class="grade-chip"><span class="gl">A</span> = <span class="gv">9</span></div>
+        <div class="grade-chip"><span class="gl">B</span> = <span class="gv">8</span></div>
+        <div class="grade-chip"><span class="gl">C</span> = <span class="gv">7</span></div>
+        <div class="grade-chip"><span class="gl">D</span> = <span class="gv">6</span></div>
+        <div class="grade-chip"><span class="gl">E</span> = <span class="gv">5</span></div>
+    </div>
+    <div id="semTabs" class="sem-tabs"></div>
+    <div id="subjectsGrid" class="subjects-grid"></div>
+    <div class="btn-row"><button class="btn-primary" onclick="calculateSGPA()">Calculate SGPA</button></div>
+    <section id="resultArea" class="result-area">
+        <div class="result-card">
+            <div class="result-label">Your SGPA</div>
+            <div class="result-value" id="sgpaValue">0.00</div>
+            <div class="result-remark" id="sgpaRemark"></div>
+            <div class="breakdown">
+                <div class="breakdown-heading">Grade Breakdown</div>
+                <table class="breakdown-table"><thead><tr><th>Subject</th><th>Grade</th><th>Credit</th><th>Points</th></tr></thead><tbody id="breakdownBody"></tbody></table>
+            </div>
+            <button class="btn-secondary" onclick="resetAll()" style="margin-top:24px">↺ Reset All</button>
+        </div>
+    </section>
+    <footer class="site-footer"><p>Made with <span>♥</span> for RGUKT students · <a href="index.html">SGPA Calculator</a></p></footer>
+</div>
+
+<script src="calculator.js"></script>
+<script>
+initBranchPage([
+  { label:'Sem 1', subjects:[
+    {name:'Linear Algebra and Calculus',credit:4},
+    {name:'Engineering Physics',credit:4},
+    {name:'Engineering Drawing',credit:3},
+    {name:'Basic Electrical Engineering',credit:4},
+    {name:'English',credit:2},
+    {name:'Engineering Physics Lab',credit:1},
+    {name:'Basic Electrical Engineering Lab',credit:1},
+    {name:'English Lab',credit:1},
+    {name:'Elements of Mechanical Engineering',credit:1}
+  ]},
+  { label:'Sem 2', subjects:[
+    {name:'Differential Equations & Vector Calculus',credit:4},
+    {name:'Engineering Chemistry',credit:4},
+    {name:'Engineering Mechanics',credit:4},
+    {name:'Programming for Problem Solving',credit:3},
+    {name:'Engineering Workshop',credit:4},
+    {name:'Fuels and Lubricants Lab',credit:1},
+    {name:'Programming for Problem Solving Lab',credit:2}
+  ]},
+  { label:'Sem 3', subjects:[
+    {name:'Partial Differential Equations',credit:4},
+    {name:'Basic Electronics Engineering',credit:3},
+    {name:'Strength of Materials',credit:4},
+    {name:'Thermodynamics',credit:4},
+    {name:'Materials Engineering',credit:3},
+    {name:'Strength of Materials Lab',credit:1},
+    {name:'Materials Engineering Lab',credit:1}
+  ]},
+  { label:'Sem 4', subjects:[
+    {name:'Fluid Mechanics & Hydraulic Machines',credit:4},
+    {name:'Instrumentation and Control',credit:4},
+    {name:'Manufacturing Process',credit:4},
+    {name:'Kinematics of Machinery',credit:4},
+    {name:'Metrology and Machine Tools',credit:3},
+    {name:'Fluid Mechanics & Hydraulic Machinery Lab',credit:1},
+    {name:'Metrology and Instrumentation Lab',credit:1},
+    {name:'Manufacturing Process Lab',credit:1}
+  ]},
+  { label:'Sem 5', subjects:[
+    {name:'Applied Thermodynamics',credit:4},
+    {name:'Dynamics of Machinery',credit:4},
+    {name:'Design of Machine Members',credit:4},
+    {name:'Professional Elective-1',credit:3},
+    {name:'Professional Elective-2',credit:3},
+    {name:'Applied Thermodynamics Lab',credit:1},
+    {name:'Theory of Machines Lab',credit:1},
+    {name:'Computer Aided Machine Drawing',credit:1.5},
+    {name:'Mini Project-I',credit:1}
+  ]},
+  { label:'Sem 6', subjects:[
+    {name:'Heat Transfer',credit:4},
+    {name:'Design of Transmission Elements',credit:3},
+    {name:'Professional Elective-3',credit:3},
+    {name:'Professional Elective-4',credit:3},
+    {name:'Managerial Economics & Financial Analysis',credit:3},
+    {name:'Heat Transfer Lab',credit:1},
+    {name:'Computer Aided Engineering Lab',credit:1.5},
+    {name:'Project-II',credit:3}
+  ]},
+  { label:'Sem 7', subjects:[
+    {name:'Automation in Manufacturing',credit:3},
+    {name:'Industrial Engineering',credit:3},
+    {name:'Professional Elective-5',credit:3},
+    {name:'Open Elective-1',credit:3},
+    {name:'Open Elective-2',credit:3},
+    {name:'Automation in Manufacturing Lab',credit:1},
+    {name:'Project-III',credit:5}
+  ]},
+  { label:'Sem 8', subjects:[
+    {name:'Professional Elective-6',credit:3},
+    {name:'Open Elective-3',credit:3},
+    {name:'Comprehensive Viva',credit:1},
+    {name:'Project-IV',credit:6}
+  ]}
+]);
+</script>
+</body>
+</html>

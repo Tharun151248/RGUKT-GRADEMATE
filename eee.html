@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EEE-SGPA Calculator</title>
+    <link rel="icon" href="RGUKT_Srikakulam_Official_idVgXaJLm-_0.png" sizes="32x32" type="image/png">
+    <meta name="description" content="Calculate SGPA for Electrical & Electronics Engineering (R23) at RGUKT.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="orb orb--1"></div><div class="orb orb--2"></div><div class="orb orb--3"></div>
+<div class="bg-ambient"></div>
+
+<nav class="top-nav">
+    <a href="index.html" class="nav-logo">📐 SGPA Calc</a>
+    <button class="nav-hamburger" onclick="toggleNav()" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+        <a href="index.html">Home</a><a href="ece.html">ECE</a><a href="cse.html">CSE</a>
+        <a href="me.html">ME</a><a href="che.html">CHEM</a><a href="mme.html">MME</a>
+        <a href="eee.html" class="active">EEE</a><a href="civil.html">CIVIL</a><a href="cgpa.html">CGPA</a>
+    </div>
+</nav>
+
+<div class="page-wrap">
+    <header class="page-header">
+        <div class="badge">EEE</div>
+        <h1 class="page-title">Electrical & Electronics Engineering</h1>
+        <p class="page-subtitle">Select grades for each subject · Total Credits: <span id="totalCredits">—</span></p>
+    </header>
+    <div class="grade-strip">
+        <div class="grade-chip"><span class="gl">Ex</span> = <span class="gv">10</span></div>
+        <div class="grade-chip"><span class="gl">A</span> = <span class="gv">9</span></div>
+        <div class="grade-chip"><span class="gl">B</span> = <span class="gv">8</span></div>
+        <div class="grade-chip"><span class="gl">C</span> = <span class="gv">7</span></div>
+        <div class="grade-chip"><span class="gl">D</span> = <span class="gv">6</span></div>
+        <div class="grade-chip"><span class="gl">E</span> = <span class="gv">5</span></div>
+    </div>
+    <div id="semTabs" class="sem-tabs"></div>
+    <div id="subjectsGrid" class="subjects-grid"></div>
+    <div class="btn-row"><button class="btn-primary" onclick="calculateSGPA()">Calculate SGPA</button></div>
+    <section id="resultArea" class="result-area">
+        <div class="result-card">
+            <div class="result-label">Your SGPA</div>
+            <div class="result-value" id="sgpaValue">0.00</div>
+            <div class="result-remark" id="sgpaRemark"></div>
+            <div class="breakdown">
+                <div class="breakdown-heading">Grade Breakdown</div>
+                <table class="breakdown-table"><thead><tr><th>Subject</th><th>Grade</th><th>Credit</th><th>Points</th></tr></thead><tbody id="breakdownBody"></tbody></table>
+            </div>
+            <button class="btn-secondary" onclick="resetAll()" style="margin-top:24px">↺ Reset All</button>
+        </div>
+    </section>
+    <footer class="site-footer"><p>Made with <span>♥</span> for RGUKT students · <a href="index.html">SGPA Calculator</a></p></footer>
+</div>
+
+<script src="calculator.js"></script>
+<script>
+initBranchPage([
+  { label:'Sem 1', subjects:[
+    {name:'Differential Equations & Multivariable Calculus',credit:4},
+    {name:'Engineering Physics',credit:4},
+    {name:'Engineering Physics Lab',credit:1.5},
+    {name:'Engineering Graphics & Design',credit:2.5},
+    {name:'Electrical Technology',credit:4},
+    {name:'Electrical Technology Lab',credit:1.5},
+    {name:'Programming & Data Structures',credit:3},
+    {name:'Programming & Data Structures Lab',credit:1.5},
+    {name:'Introduction to Latest Technical Advancements',credit:1}
+  ]},
+  { label:'Sem 2', subjects:[
+    {name:'Mathematical Methods',credit:4},
+    {name:'Network Theory',credit:4},
+    {name:'Electronic Devices and Circuits',credit:4},
+    {name:'Electronic Devices and Circuits Lab',credit:1.5},
+    {name:'Digital Logic Design',credit:4},
+    {name:'Digital Logic Design Lab',credit:1.5},
+    {name:'English-Language Communication Skills Lab-1',credit:2.5},
+    {name:'Computational Lab',credit:1.5},
+    {name:'Introduction to AI',credit:1},
+  ]},
+  { label:'Sem 3', subjects:[
+    {name:'Probability & Random Variables',credit:3},
+    {name:'Signals and Systems',credit:4},
+    {name:'Electrical Machines',credit:4},
+    {name:'Electrical Machines Lab',credit:1.5},
+    {name:'Analog ELectronic Circuits',credit:4},
+    {name:'Analog Electronic Circuits Lab',credit:1.5},
+    {name:'Object Oriented Programming',credit:2},
+    {name:'Object Oriented Programming Lab',credit:1.5},
+    {name:'Internet of Things',credit:1}
+  ]},
+  { label:'Sem 4', subjects:[
+    {name:'Robotics Laboratory',credit:1},
+    {name:'Power Systems-1',credit:4},
+    {name:'Machine Learning',credit:3},
+    {name:'Control Systems',credit:4},
+    {name:'Control Systems Lab',credit:1.5},
+    {name:'Linear Integrated Circuits',credit:4},
+    {name:'Linear Integrated Circuits Lab',credit:1.5},
+    {name:'Power Electronics',credit:4},
+    {name:'Power Electronics Lab',credit:1.5},
+  ]},
+  { label:'Sem 5', subjects:[
+    {name:'Digital Signal Processing',credit:3},
+    {name:'Power Systems-2',credit:4},
+    {name:'Power Systems Lab-2',credit:1.5},
+    {name:'English Language Communication Skills LAb-2 ',credit:1.5},
+    {name:'Electrical Vehicles',credit:3},
+    {name:'Electrical Vehicles Lab',credit:1.5},
+    {name:'Embedded Systems',credit:3},
+    {name:'Embedded Systems Lab',credit:1.5},
+    {name:'Mini Project-1',credit:1},
+    {name:'Product Design & Innovation',credit:1},
+  ]},
+  { label:'Sem 6', subjects:[
+    {name:'English-Language Communication Skills Lab-3',credit:1.5},
+    {name:'Elective-1',credit:3},
+    {name:'Elective-2',credit:3},
+    {name:'Open Elective-1',credit:3},
+    {name:'Open Elective-2',credit:3},
+    {name:'Mini Project-II',credit:1}
+  ]},
+  { label:'Sem 7', subjects:[
+    {name:'Elective-3',credit:3},
+    {name:'Elective-4',credit:3},
+    {name:'Open Elective-3',credit:3},
+    {name:'Summer Internship Project',credit:3},
+    {name:'Project-I',credit:4}
+  ]},
+  { label:'Sem 8', subjects:[
+    {name:'Community Service',credit:2},
+    {name:'Elective-5',credit:3},
+    {name:'Open Elective-4',credit:3},
+    {name:'Project-II & Dissertation',credit:6}
+  ]}
+]);
+</script>
+</body>
+</html>

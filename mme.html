@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MME-SGPA Calculator</title>
+    <link rel="icon" href="RGUKT_Srikakulam_Official_idVgXaJLm-_0.png" sizes="32x32" type="image/png">
+    <meta name="description" content="Calculate SGPA for Metallurgical & Materials Engineering at RGUKT Basar.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="orb orb--1"></div><div class="orb orb--2"></div><div class="orb orb--3"></div>
+<div class="bg-ambient"></div>
+
+<nav class="top-nav">
+    <a href="index.html" class="nav-logo">📐 SGPA Calc</a>
+    <button class="nav-hamburger" onclick="toggleNav()" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+        <a href="index.html">Home</a><a href="ece.html">ECE</a><a href="cse.html">CSE</a>
+        <a href="me.html">ME</a><a href="che.html">CHEM</a><a href="mme.html" class="active">MME</a>
+        <a href="eee.html">EEE</a><a href="civil.html">CIVIL</a><a href="cgpa.html">CGPA</a>
+    </div>
+</nav>
+
+<div class="page-wrap">
+    <header class="page-header">
+        <div class="badge">MME</div>
+        <h1 class="page-title">Metallurgical & Materials Engineering</h1>
+        <p class="page-subtitle">Select grades for each subject · Total Credits: <span id="totalCredits">—</span></p>
+    </header>
+    <div class="grade-strip">
+        <div class="grade-chip"><span class="gl">Ex</span> = <span class="gv">10</span></div>
+        <div class="grade-chip"><span class="gl">A</span> = <span class="gv">9</span></div>
+        <div class="grade-chip"><span class="gl">B</span> = <span class="gv">8</span></div>
+        <div class="grade-chip"><span class="gl">C</span> = <span class="gv">7</span></div>
+        <div class="grade-chip"><span class="gl">D</span> = <span class="gv">6</span></div>
+        <div class="grade-chip"><span class="gl">E</span> = <span class="gv">5</span></div>
+    </div>
+    <div id="semTabs" class="sem-tabs"></div>
+    <div id="subjectsGrid" class="subjects-grid"></div>
+    <div class="btn-row"><button class="btn-primary" onclick="calculateSGPA()">Calculate SGPA</button></div>
+    <section id="resultArea" class="result-area">
+        <div class="result-card">
+            <div class="result-label">Your SGPA</div>
+            <div class="result-value" id="sgpaValue">0.00</div>
+            <div class="result-remark" id="sgpaRemark"></div>
+            <div class="breakdown">
+                <div class="breakdown-heading">Grade Breakdown</div>
+                <table class="breakdown-table"><thead><tr><th>Subject</th><th>Grade</th><th>Credit</th><th>Points</th></tr></thead><tbody id="breakdownBody"></tbody></table>
+            </div>
+            <button class="btn-secondary" onclick="resetAll()" style="margin-top:24px">↺ Reset All</button>
+        </div>
+    </section>
+    <footer class="site-footer"><p>Made with <span>♥</span> for RGUKT students · <a href="index.html">SGPA Calculator</a></p></footer>
+</div>
+
+<script src="calculator.js"></script>
+<script>
+initBranchPage([
+  { label:'Sem 1', subjects:[
+    {name:'Mathematics-I',credit:4},
+    {name:'Engineering Mechanics-I',credit:4},
+    {name:'English',credit:3},
+    {name:'Chemistry',credit:4},
+    {name:'Programming in C',credit:4},
+    {name:'Communication Skills-I',credit:1},
+    {name:'English Lab',credit:2},
+    {name:'Chemistry Lab',credit:2},
+    {name:'Programming in C Lab',credit:2}
+  ]},
+  { label:'Sem 2', subjects:[
+    {name:'Engineering Physics',credit:4},
+    {name:'Mathematics-II',credit:4},
+    {name:'Scripting Languages',credit:3},
+    {name:'Basic Electrical & Electronics Engineering',credit:4},
+    {name:'Communication Skills-II',credit:1},
+    {name:'Engineering Drawing',credit:4},
+    {name:'Physics Lab',credit:2},
+    {name:'Basic Electrical & Electronics Engg. Lab',credit:2},
+    {name:'Workshop',credit:2}
+  ]},
+  { label:'Sem 3', subjects:[
+    {name:'Physical Metallurgy',credit:4},
+    {name:'Mineral Processing',credit:4},
+    {name:'Metallurgical Thermodynamics',credit:4},
+    {name:'Foundry Technology',credit:4},
+    {name:'Environmental Science',credit:3},
+    {name:'Soft Skills-I',credit:1},
+    {name:'Physical Metallurgy Lab',credit:2},
+    {name:'Foundry Technology Lab',credit:2},
+    {name:'Seminar-I',credit:1}
+  ]},
+  { label:'Sem 4', subjects:[
+    {name:'Mechanical Metallurgy',credit:4},
+    {name:'Materials Characterization Techniques',credit:4},
+    {name:'Iron Making',credit:4},
+    {name:'Non Ferrous Extractive Metallurgy',credit:4},
+    {name:'Phase Transformations',credit:4},
+    {name:'Personality Development-I',credit:1},
+    {name:'Mechanical Metallurgy Lab',credit:2},
+    {name:'Materials Characterization Lab',credit:2},
+    {name:'Non Ferrous Extractive Metallurgy Lab',credit:2},
+    {name:'Seminar-II',credit:1}
+  ]},
+  { label:'Sem 5', subjects:[
+    {name:'Mechanical Working of Materials',credit:4},
+    {name:'Steel Making',credit:4},
+    {name:'Heat Treatment',credit:4},
+    {name:'Polymer Engineering & Technology',credit:4},
+    {name:'Composite Materials & Processing',credit:4},
+    {name:'Personality Development',credit:1},
+    {name:'Mechanical Working Lab',credit:2},
+    {name:'Heat Treatment Lab',credit:2},
+    {name:'Seminar-III',credit:1}
+  ]},
+  { label:'Sem 6', subjects:[
+    {name:'Materials Joining',credit:4},
+    {name:'Introduction to Ceramic Technology',credit:4},
+    {name:'Corrosion & Environmental Degradation',credit:4},
+    {name:'Powder Metallurgy',credit:4},
+    {name:'OOPS Through JAVA',credit:4},
+    {name:'Soft Skills-II',credit:1},
+    {name:'Materials Joining Lab',credit:2},
+    {name:'Corrosion Lab',credit:2},
+    {name:'OOPS Through JAVA Lab',credit:2},
+    {name:'Seminar-IV',credit:1},
+    {name:'Comprehensive Viva-I',credit:1}
+  ]},
+  { label:'Sem 7', subjects:[
+    {name:'Internship',credit:6},
+    {name:'Elective-I',credit:3},
+    {name:'Elective-II',credit:3},
+    {name:'Elective-III',credit:3},
+    {name:'Free Elective-I',credit:3}
+  ]},
+  { label:'Sem 8', subjects:[
+    {name:'Free Elective-II',credit:3},
+    {name:'Project',credit:12},
+    {name:'Comprehensive Viva-II',credit:1}
+  ]}
+]);
+</script>
+</body>
+</html>

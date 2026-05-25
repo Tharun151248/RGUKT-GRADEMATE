@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civil-SGPA Calculator</title>
+    <link rel="icon" href="RGUKT_Srikakulam_Official_idVgXaJLm-_0.png" sizes="32x32" type="image/png">
+    <meta name="description" content="Calculate SGPA for Civil Engineering (R19) at RGUKT.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="orb orb--1"></div><div class="orb orb--2"></div><div class="orb orb--3"></div>
+<div class="bg-ambient"></div>
+
+<nav class="top-nav">
+    <a href="index.html" class="nav-logo">📐 SGPA Calc</a>
+    <button class="nav-hamburger" onclick="toggleNav()" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+        <a href="index.html">Home</a><a href="ece.html">ECE</a><a href="cse.html">CSE</a>
+        <a href="me.html">ME</a><a href="che.html">CHEM</a><a href="mme.html">MME</a>
+        <a href="eee.html">EEE</a><a href="civil.html" class="active">CIVIL</a><a href="cgpa.html">CGPA</a>
+    </div>
+</nav>
+
+<div class="page-wrap">
+    <header class="page-header">
+        <div class="badge">CIVIL</div>
+        <h1 class="page-title">Civil Engineering</h1>
+        <p class="page-subtitle">Select grades for each subject · Total Credits: <span id="totalCredits">—</span></p>
+    </header>
+    <div class="grade-strip">
+        <div class="grade-chip"><span class="gl">Ex</span> = <span class="gv">10</span></div>
+        <div class="grade-chip"><span class="gl">A</span> = <span class="gv">9</span></div>
+        <div class="grade-chip"><span class="gl">B</span> = <span class="gv">8</span></div>
+        <div class="grade-chip"><span class="gl">C</span> = <span class="gv">7</span></div>
+        <div class="grade-chip"><span class="gl">D</span> = <span class="gv">6</span></div>
+        <div class="grade-chip"><span class="gl">E</span> = <span class="gv">5</span></div>
+    </div>
+    <div id="semTabs" class="sem-tabs"></div>
+    <div id="subjectsGrid" class="subjects-grid"></div>
+    <div class="btn-row"><button class="btn-primary" onclick="calculateSGPA()">Calculate SGPA</button></div>
+    <section id="resultArea" class="result-area">
+        <div class="result-card">
+            <div class="result-label">Your SGPA</div>
+            <div class="result-value" id="sgpaValue">0.00</div>
+            <div class="result-remark" id="sgpaRemark"></div>
+            <div class="breakdown">
+                <div class="breakdown-heading">Grade Breakdown</div>
+                <table class="breakdown-table"><thead><tr><th>Subject</th><th>Grade</th><th>Credit</th><th>Points</th></tr></thead><tbody id="breakdownBody"></tbody></table>
+            </div>
+            <button class="btn-secondary" onclick="resetAll()" style="margin-top:24px">↺ Reset All</button>
+        </div>
+    </section>
+    <footer class="site-footer"><p>Made with <span>♥</span> for RGUKT students · <a href="index.html">SGPA Calculator</a></p></footer>
+</div>
+
+<script src="calculator.js"></script>
+<script>
+initBranchPage([
+  { label:'Sem 1', subjects:[
+    {name:'Engineering Chemistry',credit:3},
+    {name:'Differential Equations & Multivariable Calculus',credit:4},
+    {name:'Programming and Data Structures',credit:3},
+    {name:'Enginnering Graphics and Computer Drafting',credit:2.5},
+    {name:'Engineering Chemistry Lab',credit:1.5},
+    {name:'English Language Communication Skills Lab-1',credit:2.5},
+    {name:'Programming and Data Structures Lab',credit:1.5}
+  ]},
+  { label:'Sem 2', subjects:[
+    {name:'Engineering Physics',credit:3},
+    {name:'Mathematical Methods',credit:4},
+    {name:'Basic Electrical and Electronics Engineering',credit:3},
+    {name:'Engineering Mechanics',credit:4},
+    {name:'Engineering Geology',credit:3},
+    {name:'Engineering Physics Lab',credit:1.5},
+    {name:'Workshop',credit:1.5},
+  ]},
+  { label:'Sem 3', subjects:[
+    {name:'Management Economics and Financial Analysis',credit:3},
+    {name:'Building Materials and Construction',credit:3},
+    {name:'Concrete Technology',credit:3},
+    {name:'Mechanics of Fluids',credit:3},
+    {name:'Mechanics of Materials-1',credit:3},
+    {name:'Surveying-1',credit:3},
+    {name:'Mechanics of Materials Lab',credit:1.5},
+    {name:'Surveying Lab',credit:1.5},
+  ]},
+  { label:'Sem 4', subjects:[
+    {name:'Hydraulics Engineering',credit:3},
+    {name:'Mechanics of Materials-2',credit:3},
+    {name:'Solid Mechanics',credit:4},
+    {name:'Structural Analysis',credit:4},
+    {name:'Surveying-2',credit:3},
+    {name:'Water Resources Engineering',credit:3},
+    {name:'Concrete Technology Lab',credit:1.5},
+    {name:'Hydraulics Engineering Lab',credit:1.5},
+  ]},
+  { label:'Sem 5', subjects:[
+    {name:'Advanced Structural Analysis',credit:4},
+    {name:'Design of RC Structures',credit:4},
+    {name:'Environmental Engineering',credit:3},
+    {name:'Estimation and Costing',credit:3},
+    {name:'Transportation Engineering-1',credit:3},
+    {name:'English Language Communication Skills Lab-1',credit:1.5},,
+    {name:'Soil Mechanics Lab',credit:1.5},
+    {name:'Transportaion Engineering Lab',credit:1.5},
+  ]},
+  { label:'Sem 6', subjects:[
+    {name:'Buiding Planning and CAD Lab',credit:2.5},
+    {name:'Design of Steel Structures',credit:4},
+    {name:'Environmental Engineering-2',credit:3},
+    {name:'Foundation Engineering',credit:3},
+    {name:'Transportation Engineering-2',credit:3},
+    {name:'Electice Course-1',credit:3},
+    {name:'English Language Communication Skills Lab-1',credit:1.5},
+    {name:'Environmental Enginnering Lab',credit:1.5},
+  ]},
+  { label:'Sem 7', subjects:[
+    {name:'Elective Course-2',credit:3},
+    {name:'Elective Course-3',credit:3},
+    {name:'Elective Course-4',credit:3},
+    {name:'Open Elective Course-1',credit:3},
+    {name:'Project-1',credit:4},
+  ]},
+  { label:'Sem 8', subjects:[
+    {name:'Elective Course-5',credit:3},
+    {name:'Open Elective Course-2',credit:3},
+    {name:'Open Elective Course-3',credit:3},
+    {name:'Project-2',credit:5},
+    {name:'Indian Community Services',credit:2},
+  ]}
+]);
+</script>
+</body>
+</html>

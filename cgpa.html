@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGPA Calculator-RGUKT</title>
+    <link rel="icon" href="RGUKT_Srikakulam_Official_idVgXaJLm-_0.png" sizes="32x32" type="image/png">
+    <meta name="description" content="Calculate your Cumulative GPA (CGPA) across all semesters for any RGUKT engineering branch.">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .cgpa-hero {
+            text-align: center; margin-bottom: 40px;
+            animation: fadeDown 0.6s ease-out;
+        }
+        .branch-select-wrap {
+            max-width: 420px; margin: 0 auto 40px;
+            animation: fadeUp 0.5s ease-out 0.15s both;
+        }
+        .branch-select-label {
+            font-size: 0.78rem; font-weight: 700;
+            color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 1.5px; margin-bottom: 10px;
+        }
+        .branch-select {
+            width: 100%; padding: 16px 44px 16px 20px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius-sm); color: var(--text-primary);
+            font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 600;
+            cursor: pointer; appearance: none; -webkit-appearance: none;
+            outline: none; transition: var(--transition);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23a29bfe' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 18px center;
+        }
+        .branch-select:hover { border-color: var(--border-hover); }
+        .branch-select:focus { border-color: var(--accent-1); box-shadow: 0 0 0 3px rgba(108,92,231,0.12); }
+        .branch-select option { background: var(--bg-secondary); color: var(--text-primary); }
+
+        .formula-strip {
+            display: flex; align-items: center; justify-content: center;
+            gap: 8px; flex-wrap: wrap;
+            padding: 16px 24px; margin-bottom: 40px;
+            background: rgba(108,92,231,0.06);
+            border: 1px solid var(--border); border-radius: var(--radius-sm);
+            font-size: 1rem; font-weight: 600; color: var(--text-primary);
+            animation: fadeUp 0.5s ease-out 0.25s both;
+        }
+        .formula-strip .accent { color: var(--accent-3); }
+        .formula-strip .pink { color: var(--accent-4); }
+
+        .sem-input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px; margin-bottom: 36px;
+        }
+        .sem-input-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 24px;
+            backdrop-filter: blur(14px); transition: var(--transition);
+            animation: fadeUp 0.45s ease-out both;
+            position: relative; overflow: hidden;
+        }
+        .sem-input-card::before {
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-3));
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .sem-input-card:hover {
+            border-color: var(--border-hover); background: var(--bg-card-hover);
+            transform: translateY(-3px); box-shadow: var(--shadow-glow);
+        }
+        .sem-input-card:hover::before { opacity: 1; }
+        .sem-input-card__header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 16px;
+        }
+        .sem-input-card__title {
+            font-size: 1rem; font-weight: 700; color: var(--text-primary);
+        }
+        .sem-input-card__credits {
+            display: flex; align-items: center; gap: 4px;
+            padding: 3px 11px; background: rgba(0,206,201,0.08);
+            border: 1px solid rgba(0,206,201,0.18); border-radius: 50px;
+            font-size: 0.72rem; font-weight: 700; color: var(--accent-3);
+        }
+        .sem-input-row {
+            display: flex; align-items: center; gap: 12px;
+        }
+        .sem-input-row label {
+            font-size: 0.82rem; font-weight: 500; color: var(--text-secondary);
+            white-space: nowrap;
+        }
+        .sgpa-input {
+            width: 100%; padding: 12px 16px;
+            background: var(--bg-input); border: 1px solid var(--border);
+            border-radius: var(--radius-sm); color: var(--text-primary);
+            font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 600;
+            outline: none; transition: var(--transition);
+            text-align: center;
+        }
+        .sgpa-input:hover { border-color: var(--border-hover); }
+        .sgpa-input:focus { border-color: var(--accent-1); box-shadow: 0 0 0 3px rgba(108,92,231,0.12); }
+        .sgpa-input::placeholder { color: var(--text-muted); font-weight: 400; }
+        .sgpa-input.error { border-color: var(--accent-4); box-shadow: 0 0 12px rgba(253,121,168,0.15); }
+
+        .weighted-preview {
+            margin-top: 10px; text-align: right;
+            font-size: 0.72rem; color: var(--text-muted);
+            min-height: 1em;
+        }
+        .weighted-preview span { color: var(--accent-2); font-weight: 600; }
+    </style>
+</head>
+<body>
+<div class="orb orb--1"></div><div class="orb orb--2"></div><div class="orb orb--3"></div>
+<div class="bg-ambient"></div>
+
+<nav class="top-nav">
+    <a href="index.html" class="nav-logo">📐 SGPA Calc</a>
+    <button class="nav-hamburger" onclick="toggleNav()" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="nav-links">
+        <a href="index.html">Home</a><a href="ece.html">ECE</a><a href="cse.html">CSE</a>
+        <a href="me.html">ME</a><a href="che.html">CHEM</a><a href="mme.html">MME</a>
+        <a href="eee.html">EEE</a><a href="civil.html">CIVIL</a><a href="cgpa.html" class="active">CGPA</a>
+    </div>
+</nav>
+
+<div class="page-wrap">
+    <header class="page-header">
+        <div class="badge">Cumulative GPA</div>
+        <h1 class="page-title">CGPA Calculator</h1>
+        <p class="page-subtitle">Enter your SGPA for each semester to calculate your overall CGPA</p>
+    </header>
+
+    <!-- Branch Selector -->
+    <div class="branch-select-wrap">
+        <div class="branch-select-label">Select Your Branch</div>
+        <select class="branch-select" id="branchSelect" onchange="onBranchChange()">
+            <option value="" disabled selected>— Choose a branch —</option>
+            <option value="ece">Electronics & Communications Engineering (ECE)</option>
+            <option value="cse">Computer Science & Engineering (CSE)</option>
+            <option value="me">Mechanical Engineering (ME)</option>
+            <option value="che">Chemical Engineering (CHEM)</option>
+            <option value="mme">Metallurgical & Materials Engineering (MME)</option>
+            <option value="eee">Electrical & Electronics Engineering (EEE)</option>
+            <option value="civil">Civil Engineering</option>
+        </select>
+    </div>
+
+    <!-- Formula -->
+    <div class="formula-strip">
+        CGPA = <span class="accent">Σ</span>(<span class="pink">Semester Credits</span> × <span class="accent">SGPA</span>) / <span class="accent">Total Credits</span>
+    </div>
+
+    <!-- Semester Input Cards -->
+    <div id="semInputGrid" class="sem-input-grid"></div>
+
+    <!-- Calculate Button -->
+    <div id="btnRow" class="btn-row" style="display:none;">
+        <button class="btn-primary" onclick="calculateCGPA()">Calculate CGPA</button>
+    </div>
+
+    <!-- Result Area -->
+    <section id="resultArea" class="result-area">
+        <div class="result-card">
+            <div class="result-label">Your CGPA</div>
+            <div class="result-value" id="cgpaValue">0.00</div>
+            <div class="result-remark" id="cgpaRemark"></div>
+            <div class="breakdown">
+                <div class="breakdown-heading">Semester Breakdown</div>
+                <table class="breakdown-table">
+                    <thead><tr><th>Semester</th><th>SGPA</th><th>Credits</th><th>Weighted</th></tr></thead>
+                    <tbody id="breakdownBody"></tbody>
+                </table>
+            </div>
+            <button class="btn-secondary" onclick="resetCGPA()" style="margin-top:24px">↺ Reset All</button>
+        </div>
+    </section>
+
+    <footer class="site-footer"><p>Made with <span>♥</span> for RGUKT students · <a href="index.html">SGPA Calculator</a></p></footer>
+</div>
+
+<script>
+/* ---- Nav scroll & hamburger ---- */
+window.addEventListener('scroll', () => {
+    document.querySelector('.top-nav')?.classList.toggle('scrolled', window.scrollY > 20);
+});
+function toggleNav() {
+    document.querySelector('.nav-links')?.classList.toggle('open');
+}
+
+/* ---- Branch semester credit data ---- */
+const BRANCH_DATA = {
+    ece: {
+        name: 'ECE',
+        semesters: [
+            {label:'Semester 1', credits: 23},
+            {label:'Semester 2', credits: 25},
+            {label:'Semester 3', credits: 24},
+            {label:'Semester 4', credits: 23},
+            {label:'Semester 5', credits: 20},
+            {label:'Semester 6', credits: 15},
+            {label:'Semester 7', credits: 16},
+            {label:'Semester 8', credits: 14}
+        ]
+    },
+    cse: {
+        name: 'CSE',
+        semesters: [
+            {label:'Semester 1', credits: 20},
+            {label:'Semester 2', credits: 22.5},
+            {label:'Semester 3', credits: 21.5},
+            {label:'Semester 4', credits: 19.5},
+            {label:'Semester 5', credits: 21},
+            {label:'Semester 6', credits: 21.5},
+            {label:'Semester 7', credits: 16},
+            {label:'Semester 8', credits: 17}
+        ]
+    },
+    me: {
+        name: 'ME',
+        semesters: [
+            {label:'Semester 1', credits: 21},
+            {label:'Semester 2', credits: 22},
+            {label:'Semester 3', credits: 20},
+            {label:'Semester 4', credits: 22},
+            {label:'Semester 5', credits: 22.5},
+            {label:'Semester 6', credits: 21.5},
+            {label:'Semester 7', credits: 21},
+            {label:'Semester 8', credits: 13}
+        ]
+    },
+    che: {
+        name: 'CHEM',
+        semesters: [
+            {label:'Semester 1', credits: 19.5},
+            {label:'Semester 2', credits: 22.5},
+            {label:'Semester 3', credits: 21},
+            {label:'Semester 4', credits: 20},
+            {label:'Semester 5', credits: 21},
+            {label:'Semester 6', credits: 21},
+            {label:'Semester 7', credits: 21},
+            {label:'Semester 8', credits: 14}
+        ]
+    },
+    mme: {
+        name: 'MME',
+        semesters: [
+            {label:'Semester 1', credits: 26},
+            {label:'Semester 2', credits: 26},
+            {label:'Semester 3', credits: 25},
+            {label:'Semester 4', credits: 28},
+            {label:'Semester 5', credits: 26},
+            {label:'Semester 6', credits: 29},
+            {label:'Semester 7', credits: 18},
+            {label:'Semester 8', credits: 16}
+        ]
+    },
+    eee: {
+        name: 'EEE',
+        semesters: [
+            {label:'Semester 1', credits:23 },
+            {label:'Semester 2', credits:24 },
+            {label:'Semester 3', credits:23 },
+            {label:'Semester 4', credits:24.5 },
+            {label:'Semester 5', credits:21 },
+            {label:'Semester 6', credits:14.5 },
+            {label:'Semester 7', credits:16 },
+            {label:'Semester 8', credits:14 }
+        ]
+    },
+    civil: {
+        name: 'Civil',
+        semesters: [
+            {label:'Semester 1', credits:18 },
+            {label:'Semester 2', credits:20 },
+            {label:'Semester 3', credits:21 },
+            {label:'Semester 4', credits:23 },
+            {label:'Semester 5', credits:21.5 },
+            {label:'Semester 6', credits:21.5 },
+            {label:'Semester 7', credits:16 },
+            {label:'Semester 8', credits:16 }
+        ]
+    }
+};
+
+let currentBranch = null;
+
+/* ---- On branch change ---- */
+function onBranchChange() {
+    const val = document.getElementById('branchSelect').value;
+    if (!val) return;
+    currentBranch = BRANCH_DATA[val];
+    renderSemInputs(currentBranch.semesters);
+    document.getElementById('btnRow').style.display = 'flex';
+    document.getElementById('resultArea').classList.remove('show');
+}
+
+/* ---- Render semester input cards ---- */
+function renderSemInputs(semesters) {
+    const grid = document.getElementById('semInputGrid');
+    grid.innerHTML = semesters.map((sem, i) => `
+        <div class="sem-input-card" style="animation-delay:${i * 0.05}s" id="semCard-${i}">
+            <div class="sem-input-card__header">
+                <div class="sem-input-card__title">${sem.label}</div>
+                <div class="sem-input-card__credits">${sem.credits} Credits</div>
+            </div>
+            <div class="sem-input-row">
+                <label for="sgpa-${i}">SGPA:</label>
+                <input type="number" class="sgpa-input" id="sgpa-${i}"
+                    min="0" max="10" step="0.01" placeholder="e.g. 8.75"
+                    oninput="updatePreview(${i}, ${sem.credits})">
+            </div>
+            <div class="weighted-preview" id="preview-${i}"></div>
+        </div>
+    `).join('');
+}
+
+/* ---- Live preview of weighted score ---- */
+function updatePreview(idx, credits) {
+    const input = document.getElementById(`sgpa-${idx}`);
+    const preview = document.getElementById(`preview-${idx}`);
+    const val = parseFloat(input.value);
+
+    if (!isNaN(val) && val >= 0 && val <= 10) {
+        input.classList.remove('error');
+        const weighted = (val * credits).toFixed(2);
+        preview.innerHTML = `Weighted: <span>${weighted}</span>`;
+    } else if (input.value === '') {
+        input.classList.remove('error');
+        preview.innerHTML = '';
+    } else {
+        input.classList.add('error');
+        preview.innerHTML = '<span style="color:var(--accent-4)">Enter 0–10</span>';
+    }
+}
+
+/* ---- Calculate CGPA ---- */
+function calculateCGPA() {
+    if (!currentBranch) return;
+    const semesters = currentBranch.semesters;
+    let totalWeighted = 0;
+    let totalCredits = 0;
+    let allValid = true;
+    const rows = [];
+
+    semesters.forEach((sem, i) => {
+        const input = document.getElementById(`sgpa-${i}`);
+        const card = document.getElementById(`semCard-${i}`);
+        const val = parseFloat(input.value);
+
+        if (isNaN(val) || val < 0 || val > 10) {
+            allValid = false;
+            input.classList.add('error');
+            card.style.borderColor = 'rgba(253,121,168,0.5)';
+            card.style.boxShadow = '0 0 18px rgba(253,121,168,0.1)';
+            setTimeout(() => {
+                card.style.borderColor = '';
+                card.style.boxShadow = '';
+            }, 2200);
+        } else {
+            input.classList.remove('error');
+            card.style.borderColor = '';
+            card.style.boxShadow = '';
+            const weighted = val * sem.credits;
+            totalWeighted += weighted;
+            totalCredits += sem.credits;
+            rows.push({ label: sem.label, sgpa: val, credits: sem.credits, weighted });
+        }
+    });
+
+    if (!allValid) {
+        for (let i = 0; i < semesters.length; i++) {
+            const input = document.getElementById(`sgpa-${i}`);
+            const val = parseFloat(input.value);
+            if (isNaN(val) || val < 0 || val > 10) {
+                input.focus();
+                break;
+            }
+        }
+        return;
+    }
+
+    const cgpa = totalWeighted / totalCredits;
+    showCGPAResult(cgpa, rows, totalCredits, totalWeighted);
+}
+
+/* ---- Show CGPA Result ---- */
+function showCGPAResult(cgpa, rows, totalCredits, totalWeighted) {
+    const section = document.getElementById('resultArea');
+    section.classList.remove('show');
+    void section.offsetWidth;
+
+    document.getElementById('cgpaValue').textContent = cgpa.toFixed(2);
+
+    let remark = '';
+    if (cgpa >= 9.5) remark = '<span class="emoji">🏆</span> Outstanding! Top performer!';
+    else if (cgpa >= 9) remark = '<span class="emoji">🌟</span> Excellent! First Class with Distinction!';
+    else if (cgpa >= 8) remark = '<span class="emoji">🔥</span> Great job! First Class!';
+    else if (cgpa >= 7) remark = '<span class="emoji">👍</span> Good work! Second Class.';
+    else if (cgpa >= 6) remark = '<span class="emoji">💪</span> Decent. Keep pushing!';
+    else remark = '<span class="emoji">📚</span> Keep going, you\'ll improve!';
+
+    document.getElementById('cgpaRemark').innerHTML = remark;
+
+    const tbody = document.getElementById('breakdownBody');
+    tbody.innerHTML = rows.map(r => `
+        <tr>
+            <td>${r.label}</td>
+            <td>${r.sgpa.toFixed(2)}</td>
+            <td>${r.credits}</td>
+            <td>${r.weighted.toFixed(2)}</td>
+        </tr>
+    `).join('') + `
+        <tr class="total-row">
+            <td>Total</td>
+            <td></td>
+            <td>${totalCredits}</td>
+            <td>${totalWeighted.toFixed(2)}</td>
+        </tr>
+    `;
+
+    section.classList.add('show');
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ---- Reset ---- */
+function resetCGPA() {
+    if (!currentBranch) return;
+    currentBranch.semesters.forEach((_, i) => {
+        const input = document.getElementById(`sgpa-${i}`);
+        if (input) { input.value = ''; input.classList.remove('error'); }
+        const preview = document.getElementById(`preview-${i}`);
+        if (preview) preview.innerHTML = '';
+        const card = document.getElementById(`semCard-${i}`);
+        if (card) { card.style.borderColor = ''; card.style.boxShadow = ''; }
+    });
+    document.getElementById('resultArea').classList.remove('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
